@@ -31,3 +31,6 @@ npm-debug.log*
 
 # Internal specs and planning
 specs/
+
+# Chrome Web Store build artifacts
+*.zip
