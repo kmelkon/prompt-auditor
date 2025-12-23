@@ -1,0 +1,100 @@
+/* Prompt Auditor - Floating Button Styles */
+
+#prompt-auditor-container {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 2147483647 !important; /* Max z-index */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+#prompt-auditor-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+
+  padding: 12px 16px !important;
+  border: 1px solid #E5E1D8 !important;
+  border-radius: 12px !important;
+  background: #FDFBF7 !important;
+  color: #1A1A1A !important;
+
+  font-family: inherit !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 1 !important;
+
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+#prompt-auditor-button:hover {
+  background: #FFFFFF !important;
+  border-color: #C4A35A !important;
+  color: #1A1A1A !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2), 0 3px 8px rgba(0, 0, 0, 0.12) !important;
+  transform: translateY(-2px) !important;
+}
+
+#prompt-auditor-button:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+#prompt-auditor-button svg {
+  width: 18px !important;
+  height: 18px !important;
+  color: #C4A35A !important;
+  flex-shrink: 0 !important;
+}
+
+#prompt-auditor-button span {
+  white-space: nowrap !important;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  #prompt-auditor-button {
+    background: #2D2D2D !important;
+    border-color: #404040 !important;
+    color: #FDFBF7 !important;
+  }
+
+  #prompt-auditor-button:hover {
+    background: #3D3D3D !important;
+    border-color: #C4A35A !important;
+  }
+}
+
+/* Site-specific dark mode overrides */
+:root[data-theme="dark"] #prompt-auditor-button,
+.dark #prompt-auditor-button,
+[class*="dark"] #prompt-auditor-button,
+html.dark #prompt-auditor-button,
+body.dark #prompt-auditor-button {
+  background: #2D2D2D !important;
+  border-color: #404040 !important;
+  color: #FDFBF7 !important;
+}
+
+:root[data-theme="dark"] #prompt-auditor-button:hover,
+.dark #prompt-auditor-button:hover,
+[class*="dark"] #prompt-auditor-button:hover,
+html.dark #prompt-auditor-button:hover,
+body.dark #prompt-auditor-button:hover {
+  background: #3D3D3D !important;
+  border-color: #C4A35A !important;
+}
+
+/* Claude.ai specific dark mode */
+[data-mode="dark"] #prompt-auditor-button {
+  background: #2D2D2D !important;
+  border-color: #404040 !important;
+  color: #FDFBF7 !important;
+}
+
+[data-mode="dark"] #prompt-auditor-button:hover {
+  background: #3D3D3D !important;
+  border-color: #C4A35A !important;
+}
