@@ -339,3 +339,26 @@ body {
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out;
 }
+
+/* Support section */
+.support-text {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+  line-height: 1.5;
+}
+
+.btn--kofi {
+  background: #FF5E5B;
+  color: white;
+  text-decoration: none;
+}
+
+.btn--kofi:hover:not(:disabled) {
+  background: #e54542;
+}
+
+.btn--kofi svg {
+  width: 18px;
+  height: 18px;
+}
