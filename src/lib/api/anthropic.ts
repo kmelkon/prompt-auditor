@@ -22,6 +22,7 @@ interface AnthropicRequest {
   model: string;
   max_tokens: number;
   messages: AnthropicMessage[];
+  system?: string;
 }
 
 interface AnthropicResponse {
@@ -78,10 +79,11 @@ export const anthropicClient: AIProviderClient = {
       const response = await makeRequest(request.apiKey, {
         model: request.model,
         max_tokens: 2048,
+        system: REPHRASE_SYSTEM_PROMPT.trim(),
         messages: [
           {
             role: 'user',
-            content: REPHRASE_SYSTEM_PROMPT + request.prompt,
+            content: request.prompt,
           },
         ],
       });

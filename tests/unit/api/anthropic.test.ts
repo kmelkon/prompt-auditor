@@ -147,6 +147,38 @@ describe('Anthropic API Client', () => {
       expect(result.error).toBe('Network error');
     });
 
+    it('should use system parameter instead of concatenating to user content', async () => {
+      const mockResponse = {
+        content: [{ text: 'Rephrased' }],
+      };
+
+      (global.fetch as ReturnType<typeof vi.fn>).mockResolvedValue({
+        ok: true,
+        json: async () => mockResponse,
+      });
+
+      const request: RephraseRequest = {
+        prompt: 'Test prompt',
+        apiKey: 'test-key',
+        model: 'claude-sonnet-4-20250514',
+      };
+
+      await anthropicClient.rephrase(request);
+
+      const callArgs = (global.fetch as ReturnType<typeof vi.fn>).mock.calls[0];
+      const requestBody = JSON.parse(callArgs[1].body);
+
+      // Verify system parameter is used
+      expect(requestBody.system).toBeDefined();
+      expect(requestBody.system).toContain('Prompt Auditor');
+
+      // Verify user message only contains the prompt, not the system prompt
+      expect(requestBody.messages).toHaveLength(1);
+      expect(requestBody.messages[0].role).toBe('user');
+      expect(requestBody.messages[0].content).toBe('Test prompt');
+      expect(requestBody.messages[0].content).not.toContain('Prompt Auditor');
+    });
+
     it('should trim whitespace from rephrased text', async () => {
       const mockResponse = {
         content: [{ text: '  Rephrased with spaces  \n' }],

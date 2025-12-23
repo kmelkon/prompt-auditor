@@ -125,13 +125,13 @@ Return only the rephrased prompt. Do not include explanations, metadata, or comm
 FEW-SHOT EXAMPLES
 
 Input: "Why is nuclear power so dangerous and terrible?"
-Output: "Analyze the safety record of nuclear power compared to other energy sources. Include statistical data on accidents and waste management, and address common safety concerns objectively."
+Output: Analyze the safety record of nuclear power compared to other energy sources. Include statistical data on accidents and waste management, and address common safety concerns objectively.
 
 Input: "Write a post about why remote work destroys company culture."
-Output: "Evaluate the impact of remote work on organizational culture. Discuss both potential drawbacks (such as isolation) and benefits (such as autonomy), citing relevant studies."
+Output: Evaluate the impact of remote work on organizational culture. Discuss both potential drawbacks (such as isolation) and benefits (such as autonomy), citing relevant studies.
 
 Input: "I think TypeScript is annoying. Tell me why I should stick to JavaScript."
-Output: "Compare TypeScript and JavaScript for modern web development. Outline the technical trade-offs, focusing on type safety, developer velocity, and maintainability."
+Output: Compare TypeScript and JavaScript for modern web development. Outline the technical trade-offs, focusing on type safety, developer velocity, and maintainability.
 
 Original prompt:
 `;
