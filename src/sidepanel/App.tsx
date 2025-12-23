@@ -4,7 +4,13 @@ import { RephrasedResult } from './components/RephrasedResult';
 import { LoadingState } from './components/LoadingState';
 import { ProviderIndicator } from './components/ProviderIndicator';
 import { sendToBackground, onMessage, createUpdatePromptMessage } from '../lib/messaging';
-import { getStorage, type AIProvider } from '../lib/storage';
+import {
+  getStorage,
+  setSelectedProvider,
+  setSelectedModel,
+  onStorageChange,
+  type AIProvider,
+} from '../lib/storage';
 import { rephrase, getProviderConfig, isProviderImplemented } from '../lib/api';
 
 interface PromptData {
@@ -21,6 +27,7 @@ export function App() {
   const [provider, setProvider] = useState<AIProvider>('anthropic');
   const [model, setModel] = useState('claude-sonnet-4-20250514');
   const [hasApiKey, setHasApiKey] = useState(false);
+  const [availableProviders, setAvailableProviders] = useState<AIProvider[]>([]);
 
   // Load settings and check for pending prompt on mount
   useEffect(() => {
@@ -30,6 +37,12 @@ export function App() {
       setProvider(storage.selectedProvider);
       setModel(storage.selectedModel);
       setHasApiKey(!!storage.apiKeys[storage.selectedProvider]);
+
+      // Compute available providers (those with API keys)
+      const available = (Object.keys(storage.apiKeys) as AIProvider[]).filter(
+        (p) => !!storage.apiKeys[p]
+      );
+      setAvailableProviders(available);
 
       // Check for pending prompt from background
       const response = await sendToBackground({ type: 'SIDEPANEL_READY' }) as { prompt: PromptData | null };
@@ -55,6 +68,47 @@ export function App() {
       }
       return false;
     });
+  }, []);
+
+  // Listen for storage changes (sync with settings page)
+  useEffect(() => {
+    onStorageChange(async (changes) => {
+      if (changes.selectedProvider) {
+        setProvider(changes.selectedProvider.newValue);
+      }
+      if (changes.selectedModel) {
+        setModel(changes.selectedModel.newValue);
+      }
+      if (changes.apiKeys) {
+        const newApiKeys = changes.apiKeys.newValue || {};
+        const available = (Object.keys(newApiKeys) as AIProvider[]).filter(
+          (p) => !!newApiKeys[p]
+        );
+        setAvailableProviders(available);
+        // Update hasApiKey for current provider
+        const currentProvider = changes.selectedProvider?.newValue || provider;
+        setHasApiKey(!!newApiKeys[currentProvider]);
+      }
+    });
+  }, [provider]);
+
+  const handleProviderChange = useCallback(async (newProvider: AIProvider) => {
+    setProvider(newProvider);
+    await setSelectedProvider(newProvider);
+
+    // Set default model for the new provider
+    const config = getProviderConfig(newProvider);
+    setModel(config.defaultModel);
+    await setSelectedModel(config.defaultModel);
+
+    // Update hasApiKey state
+    const storage = await getStorage();
+    setHasApiKey(!!storage.apiKeys[newProvider]);
+  }, []);
+
+  const handleModelChange = useCallback(async (newModel: string) => {
+    setModel(newModel);
+    await setSelectedModel(newModel);
   }, []);
 
   const handleRephrase = useCallback(async () => {
@@ -140,6 +194,9 @@ export function App() {
           provider={provider}
           model={model}
           hasApiKey={hasApiKey}
+          availableProviders={availableProviders}
+          onProviderChange={handleProviderChange}
+          onModelChange={handleModelChange}
         />
 
         {error && (
