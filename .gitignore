@@ -1,5 +1,6 @@
 # Dependencies
 node_modules/
+store-assets/
 
 # Build output
 dist/
@@ -28,6 +29,7 @@ npm-debug.log*
 # Temporary files
 *.tmp
 .cache/
+.playwright-mcp/
 
 # Internal specs and planning
 specs/
